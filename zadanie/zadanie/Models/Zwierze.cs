@@ -4,9 +4,7 @@ public enum Kategoria
 {
     pies,
     kot,
-    gryzon,
-    gad,
-    plaz
+    gryzon
 }
 
 public class Zwierze

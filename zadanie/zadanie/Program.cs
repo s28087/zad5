@@ -20,8 +20,10 @@ public class Program
             app.UseSwaggerUI();
         }
 
-        app.MapControllers();
+        app.UseHttpsRedirection();
         
+        
+        app.MapControllers();
         app.Run();
         
     }

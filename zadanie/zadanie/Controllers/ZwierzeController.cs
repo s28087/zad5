@@ -10,9 +10,20 @@ public class ZwierzeController : ControllerBase
     
     private static readonly List<Zwierze> _zwierzeta = new()
     {
-        new Zwierze { IdZwierze = 1, Imie = "Azor", Kategoria = Kategoria.pies, Masa = 15.0, KolorSiersci = "biały" },
-        new Zwierze { IdZwierze = 2, Imie = "Tosia", Kategoria = Kategoria.kot, Masa = 10.0, KolorSiersci = "czarny" }
+        new Zwierze { IdZwierze = 1, Imie = "Azor", Kategoria = Kategoria.pies, Masa = 10.0, KolorSiersci = "biały" },
+        new Zwierze { IdZwierze = 2, Imie = "Tosia", Kategoria = Kategoria.kot, Masa = 5.0, KolorSiersci = "czarny" },
+        new Zwierze { IdZwierze = 3, Imie = "Max", Kategoria = Kategoria.pies, Masa = 11.0, KolorSiersci = "brązowy" },
+        new Zwierze { IdZwierze = 4, Imie = "Lucek", Kategoria = Kategoria.gryzon, Masa = 2.0, KolorSiersci = "czarny" },
+        new Zwierze { IdZwierze = 5, Imie = "Nero", Kategoria = Kategoria.kot, Masa = 5.0, KolorSiersci = "brązowy" }
     };
+
+    private static readonly List<Wizyta> _wizyty = new()
+    {
+        new Wizyta { DataWizyty = new DateTime(2024,12,25), Zwierze = _zwierzeta[0], Opis = "Zwykły przegląd", Cena = 60.00},
+        new Wizyta { DataWizyty = new DateTime(2024,12,26), Zwierze = _zwierzeta[1], Opis = "Zwykły przegląd", Cena = 60.00},
+        new Wizyta { DataWizyty = new DateTime(2024,12,28), Zwierze = _zwierzeta[1], Opis = "Szczepienie", Cena = 50.00}
+    };
+    
 
     [HttpGet]
     public IActionResult GetZwierze()
@@ -70,6 +81,21 @@ public class ZwierzeController : ControllerBase
 
         _zwierzeta.Remove(zwierzeUsuniecie);
         return NoContent();
+    }
+
+
+    [HttpGet("{id:int}/wizyty")]
+    public IActionResult GetZwierzeWizyty(int id)
+    {
+        var zwierze = _zwierzeta.FirstOrDefault(zwierze1 => zwierze1.IdZwierze == id);
+
+        if (zwierze == null)
+        {
+            return NotFound("Zwierze z id " + id + " nie zostało znalezione");
+        }
+
+        var wizytyZwierze = _wizyty.Where(w => w.Zwierze.IdZwierze == id).ToList();
+        return Ok(wizytyZwierze);
     }
     
 
