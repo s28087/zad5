@@ -34,7 +34,7 @@ public class ZwierzeController : ControllerBase
     [HttpGet("{id:int}")]
     public IActionResult GetZwierze(int id)
     {
-        var zwierze = _zwierzeta.FirstOrDefault(zwierze1 => zwierze1.IdZwierze == id);
+        var zwierze = _zwierzeta.FirstOrDefault(z => z.IdZwierze == id);
 
         if (zwierze == null)
         {
@@ -55,7 +55,7 @@ public class ZwierzeController : ControllerBase
     [HttpPut("{id:int}")]
     public IActionResult UpdateZwierze(int id, Zwierze zwierze)
     {
-        var zwierzeEdycja = _zwierzeta.FirstOrDefault(zwierze1 => zwierze1.IdZwierze == id);
+        var zwierzeEdycja = _zwierzeta.FirstOrDefault(z => z.IdZwierze == id);
 
         if (zwierzeEdycja == null)
         {
@@ -71,7 +71,7 @@ public class ZwierzeController : ControllerBase
     [HttpDelete("{id:int}")]
     public IActionResult DeleteZwierze(int id)
     {
-        var zwierzeUsuniecie = _zwierzeta.FirstOrDefault(zwierze1 => zwierze1.IdZwierze == id);
+        var zwierzeUsuniecie = _zwierzeta.FirstOrDefault(z => z.IdZwierze == id);
 
         if (zwierzeUsuniecie == null)
         {
@@ -87,7 +87,7 @@ public class ZwierzeController : ControllerBase
     [HttpGet("{id:int}/wizyty")]
     public IActionResult GetZwierzeWizyty(int id)
     {
-        var zwierze = _zwierzeta.FirstOrDefault(zwierze1 => zwierze1.IdZwierze == id);
+        var zwierze = _zwierzeta.FirstOrDefault(z => z.IdZwierze == id);
 
         if (zwierze == null)
         {
@@ -98,5 +98,23 @@ public class ZwierzeController : ControllerBase
         return Ok(wizytyZwierze);
     }
     
+    
+    [HttpPost("wizyty")]
+    public IActionResult CreateZwierzeWizyty([FromQuery]int id, Wizyta wizyta)
+    {
+        
+        var zwierze = _zwierzeta.FirstOrDefault(z => z.IdZwierze == id);
 
+        if (zwierze == null)
+        {
+            return NotFound("Zwierze z id " + id + " nie zostało znalezione");
+        }
+
+        wizyta.Zwierze = zwierze;
+        
+        _wizyty.Add(wizyta);
+        return StatusCode(StatusCodes.Status201Created);
+    }
+
+    
 }
